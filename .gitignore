@@ -1,0 +1,6 @@
+node_modules
+.demo
+registry/storage
+registry/htpasswd
+registry/verdaccio.log
+registry/verdaccio.pid

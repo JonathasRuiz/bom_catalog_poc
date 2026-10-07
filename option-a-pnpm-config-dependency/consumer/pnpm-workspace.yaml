@@ -1,0 +1,2 @@
+configDependencies:
+  "@poc/pnpm-plugin-catalog": 1.0.0

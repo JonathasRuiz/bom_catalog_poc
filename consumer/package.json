@@ -8,5 +8,13 @@
   },
   "peerDependencies": {
     "typescript": "^7"
+  },
+  "workspaces": {
+    "catalogs": {
+      "my-catalog": {
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
+      }
+    }
   }
 }

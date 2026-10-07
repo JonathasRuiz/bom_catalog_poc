@@ -1,0 +1,16 @@
+{
+  "name": "@poc/catalog",
+  "version": "0.0.0",
+  "description": "Option B: syncs the BOM catalogs into a consumer on demand",
+  "type": "module",
+  "bin": {
+    "catalog-sync": "bin/catalog-sync.mjs"
+  },
+  "files": [
+    "bin",
+    "catalog.json"
+  ],
+  "dependencies": {
+    "yaml": "2.9.1"
+  }
+}

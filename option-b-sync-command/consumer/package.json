@@ -1,0 +1,24 @@
+{
+  "name": "consumer-b",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "catalog:sync": "catalog-sync && bun install",
+    "catalog:check": "catalog-sync --check"
+  },
+  "dependencies": {
+    "react": "catalog:bom",
+    "react-dom": "catalog:bom"
+  },
+  "devDependencies": {
+    "@poc/catalog": "1.0.0"
+  },
+  "workspaces": {
+    "catalogs": {
+      "bom": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0"
+      }
+    }
+  }
+}

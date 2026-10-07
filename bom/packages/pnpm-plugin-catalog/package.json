@@ -1,0 +1,9 @@
+{
+  "name": "@poc/pnpm-plugin-catalog",
+  "version": "0.0.0",
+  "description": "Option A: supplies the BOM catalogs to pnpm before dependency resolution",
+  "files": [
+    "pnpmfile.mjs",
+    "catalog.json"
+  ]
+}

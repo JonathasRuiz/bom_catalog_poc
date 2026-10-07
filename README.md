@@ -52,3 +52,44 @@ bun inject-catalog.js --destinationPackagePath ../consumer/package.json
 ### `consumer/`
 
 A standalone Bun project that receives the injected `my-catalog` catalog.
+
+## Alternatives to the postinstall script
+
+A postinstall script runs after the package manager has resolved dependencies, so it is too late to supply a catalog:
+
+- **A fresh project can't install.** Until the catalog is injected, `catalog:my-catalog` can't resolve, so the install fails before the catalog package and its script are downloaded.
+- **A bump leaves the lockfile stale.** The install resolves against the old catalog, and the script rewrites `package.json` afterwards. The project needs a second install, and `--frozen-lockfile` fails until that lockfile is committed.
+
+Two alternatives are prototyped side by side. Both get the BOM from a versioned package on a local registry:
+
+```
+.
+├── bom/
+│   ├── catalog.json                  # Single source of truth, exact versions
+│   └── packages/
+│       ├── pnpm-plugin-catalog/      # Option A: @poc/pnpm-plugin-catalog
+│       └── catalog/                  # Option B: @poc/catalog, ships the catalog-sync command
+├── option-a-pnpm-config-dependency/  # pnpm consumer, plus demo.sh
+├── option-b-sync-command/            # Bun consumer, plus demo.sh
+├── registry/                         # Verdaccio config for the local registry
+└── scripts/                          # Registry control, publishing, demo helpers
+```
+
+| | Postinstall (above) | [A: pnpm config dependency](option-a-pnpm-config-dependency/README.md) | [B: sync command](option-b-sync-command/README.md) |
+|---|---|---|---|
+| Package managers | Bun | pnpm 10.8+ | Bun, pnpm (Yarn not yet) |
+| Catalog copied into the consumer repo | Yes | No | Yes, committed |
+| Fresh clone installs | Only if the catalog is already committed | Yes | Yes |
+| Steps to bump the BOM | Bump, install, install again | Change the pin, install | Change the pin, `catalog:sync` |
+| Needs dependency install scripts | Yes | No | No |
+| CI catches drift | No | Yes, through `--frozen-lockfile` | Yes, through `catalog:check` and `--frozen-lockfile` |
+
+Run a demo. Each demo resets the local registry, publishes BOM 1.0.0, installs a working copy of the consumer under `.demo/`, releases BOM 1.1.0, and bumps the consumer to it:
+
+```sh
+option-a-pnpm-config-dependency/demo.sh
+option-b-sync-command/demo.sh
+scripts/registry.sh stop   # When you're done
+```
+
+The demos need Node, `npx` (to run Verdaccio), and Bun or pnpm.

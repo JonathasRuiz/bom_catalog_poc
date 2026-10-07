@@ -1,0 +1,9 @@
+{
+  "name": "consumer-a",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "react": "catalog:bom",
+    "react-dom": "catalog:bom"
+  }
+}
